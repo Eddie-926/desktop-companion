@@ -17,7 +17,7 @@ int main()
         "Desktop Companion - Cat Test",
         800,
         600,
-        SDL_WINDOW_RESIZABLE
+        0
     );
 
     if (window == nullptr)
@@ -83,14 +83,24 @@ int main()
             break;
         }
 
-        // Center the cat dynamically
-        SDL_FRect destination = {
-            (outputWidth - catWidth) / 2.0f,
-            (outputHeight - catHeight) / 2.0f,
-            catWidth,
-            catHeight
-        };
+        // Calculate the scale needed to fit the cat inside the window
+        float scaleX = static_cast<float>(outputWidth) / catWidth;
+        float scaleY = static_cast<float>(outputHeight) / catHeight;
+        
+        // Use the smaller scale to preserve the image's proportions
+        float scale = (scaleX < scaleY) ? scaleX : scaleY;
 
+        // Calculate the scaled dimensions
+        float scaledWidth = catWidth * scale;
+        float scaledHeight = catHeight * scale;
+
+        // Center the scaled image
+        SDL_FRect destination = {
+            (outputWidth - scaledWidth) / 2.0f,
+            (outputHeight - scaledHeight) / 2.0f,
+            scaledWidth,
+            scaledHeight
+        };
         SDL_RenderTexture(renderer, cat, nullptr, &destination);
 
         SDL_RenderPresent(renderer);
