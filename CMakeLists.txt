@@ -45,3 +45,18 @@ target_link_libraries(DesktopCompanion
         SDL3::SDL3
         SDL3_image::SDL3_image
 )
+
+# Direct2D prototype
+add_executable(Direct2DPrototype
+    src/prototypes/direct2d/main.cpp
+)
+
+target_link_libraries(Direct2DPrototype
+    PRIVATE
+        d2d1
+        windowscodecs
+        ole32
+        dcomp
+        dxgi
+        d3d11
+) 
